@@ -47,16 +47,15 @@ EXCLUDES=(
   "/.claude/"
   "/.claude-plugin/"
   "/.codex/"
-  "/.cursor-plugin/"
-  "/.devin-plugin/"
+  "/.unsupported-plugin/"
+
   "/.git/"
   "/.gitattributes"
   "/.github/"
   "/.gitignore"
   "/.gitmodules"
-  "/.kimi-plugin/"
-  "/.opencode/"
-  "/.pi/"
+  "/.unsupported-harness/"
+
   "/.pre-commit-config.yaml"
   "/.version-bump.json"
   "/.worktrees/"
@@ -66,9 +65,8 @@ EXCLUDES=(
   "/AGENTS.md"
   "/CHANGELOG.md"
   "/CLAUDE.md"
-  "/GEMINI.md"
   "/RELEASE-NOTES.md"
-  "/gemini-extension.json"
+
   "/package.json"
 
   # Directories not shipped by canonical Codex plugins

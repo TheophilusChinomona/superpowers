@@ -15,7 +15,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** If working in an isolated worktree, it should have been created via the `superpowers:using-git-worktrees` skill at execution time.
 
-**Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+**Save plans to:** `docs/superpowers/plans/`, using a dated, feature-specific Markdown filename.
 - (User preferences for plan location override this default)
 
 ## Scope Check
@@ -58,7 +58,7 @@ independently testable deliverable.
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans for small and medium plans, or superpowers:subagent-driven-development when the plan is large enough that per-task subagents and review repay their cost. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -87,7 +87,7 @@ include this section.]
 **Files:**
 - Create: `exact/path/to/file.py`
 - Modify: `exact/path/to/existing.py:123-145`
-- Test: `tests/exact/path/to/test.py`
+- Test: the repository's concrete test file and test target for this task
 
 **Interfaces:**
 - Consumes: [what this task uses from earlier tasks — exact signatures]
@@ -154,18 +154,18 @@ If you find issues, fix them inline. No need to re-review — just fix and move 
 
 After saving the plan, offer execution choice:
 
-**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Two execution options:**
+**"Plan complete and saved under `docs/superpowers/plans/`. Two execution options:**
 
-**1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
+**1. Inline Execution** - Execute tasks in this session using executing-plans, with checkpoints for review. Default for small and medium plans.
 
-**2. Inline Execution** - Execute tasks in this session using executing-plans, batch execution with checkpoints
+**2. Subagent-Driven** - Dispatch a fresh subagent per task with review between tasks. Worth it only when the plan is large enough that per-task isolation and review repay their cost.
 
 **Which approach?"**
-
-**If Subagent-Driven chosen:**
-- **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-development
-- Fresh subagent per task + two-stage review
 
 **If Inline Execution chosen:**
 - **REQUIRED SUB-SKILL:** Use superpowers:executing-plans
 - Batch execution with checkpoints for review
+
+**If Subagent-Driven chosen:**
+- **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-development
+- Fresh subagent per task + two-stage review

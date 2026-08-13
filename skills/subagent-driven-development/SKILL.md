@@ -1,6 +1,6 @@
 ---
 name: subagent-driven-development
-description: Use when executing implementation plans with independent tasks in the current session
+description: Use when executing a large implementation plan whose independent tasks justify per-task subagents and review
 ---
 
 # Subagent-Driven Development
@@ -55,6 +55,18 @@ digraph when_to_use {
 - Fresh subagent per task (no context pollution)
 - Review after each task (spec compliance + code quality), broad review at the end
 - Faster iteration (no human-in-loop between tasks)
+
+**Overhead gate — do not use SDD for small plans.** A fresh implementer dispatch
+plus a task review per task, plus a final whole-branch review, is real overhead.
+It pays off only when the plan is large enough that isolating each task and
+reviewing each diff beats doing the work inline. For a small plan — a handful of
+tightly related or trivial tasks, or one focused change split into steps —
+execute inline with superpowers:executing-plans instead.
+
+**Use SDD when** the plan is large enough that per-task isolation and review
+repay their cost: several tasks with distinct review surfaces, tasks that would
+each flood your context with a large diff, or independent tasks an implementer
+can work through cleanly against the spec. When in doubt, execute inline.
 
 ## The Process
 

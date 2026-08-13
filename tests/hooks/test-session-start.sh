@@ -5,6 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 HOOK_UNDER_TEST="$REPO_ROOT/hooks/session-start"
 WRAPPER_UNDER_TEST="$REPO_ROOT/hooks/run-hook.cmd"
+HOOKS_JSON_NATIVE="$(cygpath -w "$REPO_ROOT/hooks/hooks.json" 2>/dev/null || printf '%s' "$REPO_ROOT/hooks/hooks.json")"
 
 FAILURES=0
 TEST_ROOT="$(mktemp -d)"
@@ -158,7 +159,7 @@ if (!/run-hook\.cmd" session-start$/.test(entry.command)) {
   console.error(`unexpected SessionStart command shape: ${entry.command}`);
   process.exit(1);
 }
-' "$REPO_ROOT/hooks/hooks.json"; then
+' "$HOOKS_JSON_NATIVE"; then
     pass "hooks.json registers SessionStart with shell:bash dispatch"
 else
     fail "hooks.json registers SessionStart with shell:bash dispatch"
@@ -184,26 +185,13 @@ assert_command_output \
     CLAUDE_PLUGIN_ROOT="$REPO_ROOT" \
     bash "$WRAPPER_UNDER_TEST" session-start
 
-cursor_home="$(make_home cursor)"
+codex_home="$(make_home codex)"
 assert_command_output \
-    "Cursor emits top-level additional_context only" \
-    "cursor" \
-    "" \
-    "" \
-    "$cursor_home" \
-    CURSOR_PLUGIN_ROOT="$REPO_ROOT" \
-    CLAUDE_PLUGIN_ROOT="$REPO_ROOT" \
-    bash "$HOOK_UNDER_TEST"
-
-copilot_home="$(make_home copilot-cli)"
-assert_command_output \
-    "Copilot CLI emits top-level additionalContext only" \
+    "Codex emits top-level additionalContext only" \
     "sdk" \
     "" \
     "" \
-    "$copilot_home" \
-    COPILOT_CLI=1 \
-    CLAUDE_PLUGIN_ROOT="$REPO_ROOT" \
+    "$codex_home" \
     bash "$HOOK_UNDER_TEST"
 
 legacy_home="$(make_home legacy-warning-removed)"

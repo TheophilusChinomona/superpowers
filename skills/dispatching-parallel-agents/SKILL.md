@@ -1,6 +1,6 @@
 ---
 name: dispatching-parallel-agents
-description: Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies
+description: Use when facing 3+ independent, non-trivial investigations that justify parallel subagents instead of sequential inline work
 ---
 
 # Dispatching Parallel Agents
@@ -43,6 +43,17 @@ digraph when_to_use {
 - Failures are related (fix one might fix others)
 - Need to understand full system state
 - Agents would interfere with each other
+
+**Overhead gate — do not dispatch for trivial work.** A parallel subagent
+costs a fresh context build plus a review pass per agent. It repays that cost
+only when each investigation is individually non-trivial. When the independent
+items are small — a one-line fix each, a constant rename, a handful of obvious
+edits — do them inline and sequentially. Parallel subagents are for when doing
+the work yourself would each cost you real context or wall-clock time.
+
+**Use parallel dispatch when** you have 3+ independent problems that each need
+real investigation (reading code, forming a theory, testing a fix) and the
+combined sequential time would be substantial. When in doubt, work inline.
 
 ## The Pattern
 
@@ -132,6 +143,10 @@ Return: Summary of what you found and what you fixed.
 **Need full context:** Understanding requires seeing entire system
 **Exploratory debugging:** You don't know what's broken yet
 **Shared state:** Agents would interfere (editing same files, using same resources)
+**Trivial independent work:** A few small independent fixes are usually faster
+done inline and sequentially than dispatched — each subagent pays a context
+build and a review pass. Do them yourself unless each item is individually
+substantial.
 
 ## Real Example from Session
 
