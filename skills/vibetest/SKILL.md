@@ -1,54 +1,69 @@
 ---
 name: vibetest
-description: Use when asked to vibetest a website, or to run automated multi-agent QA against a live or localhost site to find UI bugs, broken links, accessibility issues, and other functional problems
+description: Use when asked to vibetest a website or run automated browser QA to find UI bugs, broken links, accessibility issues, or functional problems on a live, localhost, or LAN site
 ---
 
 # Vibetest
 
 ## Overview
 
-Run automated QA by launching several Browser-Use agents against a URL, each testing a different slice of the page, then consolidate their findings into a severity-ranked bug report.
+Drive a real browser through a site, exercising its interactive elements, and report the bugs you find — broken links, failing forms, JS errors, and accessibility problems — ranked by severity.
 
-**Core principle:** scout the page, fan out N agents to test different elements, summarize the reports into high/medium/low-severity findings with specific steps and observed results.
+**Core principle:** navigate, enumerate every interactive element, test each one, record the concrete element → action → observed-result for anything that breaks.
+
+No Gemini key, no `vibetest` package, and no separate Chromium install are required. Use the browser you already have: the `browser_exec` tool drives local Chrome for `localhost`/LAN URLs and routes public URLs to a cloud browser automatically.
 
 ## When to Use
 
 - The user asks to "vibetest" a site, run browser QA, or check a website for bugs/broken links/a11y issues.
-- You want automated regression smoke-testing of a just-built (vibe-coded) page, live URL or `localhost`.
+- Smoke-testing a just-built (vibe-coded) page before showing it off — live URL or `localhost`.
 
-**Don't use when:** the task needs a single specific interaction test (drive one browser yourself instead), or when no `GOOGLE_API_KEY` / Gemini access is configured (vibetest's agents run on Gemini).
-
-## Prerequisites
-
-- Python 3.11+.
-- `GOOGLE_API_KEY` set in the environment (Gemini 2.0 flash / 1.5 flash). **Not** `BROWSER_USE_API_KEY` — vibetest uses the open-source `browser-use` library with local Playwright browsers, not Browser Use Cloud.
-- The `vibetest` package installed, with Playwright Chromium downloaded.
-- The vibetest MCP server registered with the harness (Hermes: `hermes mcp`; Claude Code: `claude mcp add vibetest ...`).
+**Don't use when:** a single, specific interaction is all that's needed (just drive the browser once), or when the target is unreachable from both local Chrome and the cloud browser.
 
 ## How to Run
 
-vibetest exposes two MCP tools:
+Work text-first (the model cannot see screenshots): read the page state and DOM, don't rely on images.
 
-1. `start(url, num_agents=3, headless=false)` — spawns the QA swarm and returns a `test_id`.
-2. `results(test_id)` — returns the consolidated report with severity breakdown.
+1. **Open the URL** — `new_tab(url)` (first navigation) or `goto_url(url)`, then `wait_for_load()`.
+2. **Read the page** — `page_info()` for state, then `js()` to extract the DOM text: headings, nav, links (`[...document.querySelectorAll('a')].map(a => a.href+' | '+a.textContent)`), buttons, forms, inputs.
+3. **Enumerate interactive elements** — links, buttons, form fields, dropdowns, menus. Group them into test areas (header nav, main content, forms, footer).
+4. **Test each element**:
+   - Links: click (or `js("document.querySelector('…').click()")`), check the result — 404, error page, wrong destination, dead redirect.
+   - Buttons: click, confirm a response happens.
+   - Forms: submit with valid input, then with invalid/empty input — record error handling, validation, confirmation.
+   - Navigation: exercise header/footer/sidebar links.
+5. **Check accessibility** — missing `alt` on images, unlabeled inputs (`label`/`aria-label`), empty link text, missing headings.
+6. **Report** a consolidated list ranked high/medium/low severity (format below).
 
-### Parameters
+### localhost / LAN
 
-| Param | Default | Notes |
-|---|---|---|
-| `url` | — | Required. `https://…`, `localhost:3000`, etc. |
-| `num_agents` | `3` | More agents = broader coverage (capped at 10 concurrent). |
-| `headless` | `false` | `true` for no visible browser windows. |
+`localhost:3000`, `127.0.0.1`, `192.168.x.x` etc. work directly — the browser harness drives the local Chrome. Cloud providers are auto-routed away from private addresses, so a cloud browser is never asked to reach your machine.
 
-### Flow
+### Parallel coverage (optional)
 
-1. Call `start` with the target URL and desired agent count; capture the `test_id`.
-2. Poll `results(test_id)` until the report is ready.
-3. Read the report: `high_severity` / `medium_severity` / `low_severity`, `total_issues`, and per-issue descriptions (element tested + action + observed result).
+For a large site, split the areas into `delegate_task` subagents (each drives its own browser over one section) and merge their reports. For a small site, test inline — one browser, sequential checks, no subagent overhead.
+
+## Report Format
+
+```markdown
+## Vibetest — <url>
+
+### High severity
+- <element> — <action> — <observed result>   (e.g. "Contact Us" link — clicked — redirected to 404)
+
+### Medium severity
+- …
+
+### Low severity
+- …
+```
+
+Each finding must name the exact element, the action taken, and the observed result. Never write a vague "broken link" — say which link and what happened.
 
 ## Common Mistakes
 
-- **Wrong key** — vibetest reads `GOOGLE_API_KEY` (Gemini); `BROWSER_USE_API_KEY` (cloud) will not work. They are different products.
-- **Treating it as Browser Use Cloud** — vibetest drives local Playwright Chromium via the open-source `browser-use` package; it does not use the cloud SDK or API v4.
-- **Returning the raw agent dumps** — always use `results()` for the consolidated, deduplicated, severity-classified report rather than the per-agent transcripts.
-- **Forgetting Chromium** — `playwright install chromium` must have been run, or every agent errors at launch.
+- **Reporting without evidence** — a finding needs the element + action + result you actually observed.
+- **Screenshot-driven testing** — the model can't see images; always read `page_info()` / `js()` text.
+- **Reaching `localhost` from a cloud browser** — don't route a private URL through the cloud; let the local-Chrome path handle it.
+- **Installing Chromium/Playwright** — unnecessary; the browser tool drives the existing Chrome.
+- **Missing the a11y pass** — alt text, labels, and contrast are part of vibetest, not an afterthought.
