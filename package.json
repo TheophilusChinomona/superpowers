@@ -1,5 +1,5 @@
 {
-  "name": "superpowers",
+  "name": "superpowers-lite",
   "version": "6.3.0",
   "description": "Superpowers skills and runtime bootstrap for coding agents",
   "type": "module",

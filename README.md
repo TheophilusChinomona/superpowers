@@ -1,12 +1,14 @@
 # Superpowers Lite
 
-Superpowers Lite is a focused software-development methodology for coding agents. It keeps the reusable skills and runtime bootstrap while supporting only three integrations:
+Superpowers Lite is [theochinomona's](https://github.com/TheophilusChinomona) fork of [obra/superpowers](https://github.com/obra/superpowers), trimmed to a focused software-development methodology for coding agents. It keeps the reusable skills and runtime bootstrap while supporting only three integrations:
 
 - Claude Code
 - Codex (App and CLI)
 - Hermes Agent
 
-This fork intentionally removes integrations for other coding-agent harnesses so the repository stays smaller, easier to maintain, and easier to understand.
+This fork intentionally removes integrations for other coding-agent harnesses (Cursor, Devin, Kimi, OpenCode, Gemini CLI, and others) so the repository stays smaller, easier to maintain, and easier to understand. It also adds a set of curated subagents (see [Subagents](#subagents) below) and a couple of extra skills (`vibetest`, `hermes-cron-management`) not present upstream.
+
+Because this is a personal fork, it is **not** published on the official Claude Code or Codex marketplaces — install it by pointing your harness at this repository directly, as described below.
 
 ## How it works
 
@@ -23,45 +25,42 @@ The bootstrap is loaded automatically by the supported integrations. You do not 
 
 ## Installation
 
-Install separately in each coding-agent harness you use.
+Install separately in each coding-agent harness you use. All three methods below point at this fork (`TheophilusChinomona/superpowers-lite`), not upstream `obra/superpowers` or any official marketplace.
 
 ### Claude Code
 
-Install from Anthropic's official marketplace:
+Register this repo as a marketplace, then install from it:
 
 ```text
-/plugin install superpowers@claude-plugins-official
+/plugin marketplace add TheophilusChinomona/superpowers-lite
+/plugin install superpowers-lite@superpowers-dev
 ```
 
-Or register and install from the Superpowers marketplace:
+`superpowers-dev` is the marketplace name and `superpowers-lite` is the plugin name, both declared in this repo's [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json).
+
+For local development, clone the repo and add the local path instead:
 
 ```text
-/plugin marketplace add obra/superpowers-marketplace
-/plugin install superpowers@superpowers-marketplace
+/plugin marketplace add /absolute/path/to/superpowers-lite
+/plugin install superpowers-lite@superpowers-dev
 ```
 
-### Codex App
+### Codex App / CLI
 
-1. Open **Plugins** in the Codex app sidebar.
-2. Find **Superpowers** in the Coding section.
-3. Click **+** and follow the installation prompts.
+Codex's plugin catalog only lists officially curated plugins, so a personal fork can't be installed by searching `/plugins`. Instead, clone this repo and load it as a local plugin:
 
-### Codex CLI
-
-Open the plugin interface:
-
-```text
-/plugins
+```bash
+git clone https://github.com/TheophilusChinomona/superpowers-lite.git
 ```
 
-Search for `superpowers`, then select **Install Plugin**.
+Point Codex at the cloned directory (Codex App: **Plugins → Add local plugin**; Codex CLI: pass the cloned path when adding a plugin source). See [`.codex-plugin/plugin.json`](.codex-plugin/plugin.json) for the plugin manifest Codex reads.
 
 ### Hermes Agent
 
-Install the plugin from this repository:
+Install the plugin directly from this fork:
 
 ```bash
-hermes plugins install obra/superpowers --enable
+hermes plugins install TheophilusChinomona/superpowers-lite --enable
 ```
 
 Restart active Hermes sessions after installing. If a long session compacts before the bootstrap is reloaded, start a fresh session.
@@ -84,20 +83,28 @@ Use the workflow that fits the task. The skills are guidance for disciplined dev
 
 ### Skills
 
+Live under `skills/`:
+
 - **Planning:** `brainstorming`, `writing-plans`, `executing-plans`
 - **Implementation:** `test-driven-development`, `subagent-driven-development`
 - **Debugging:** `systematic-debugging`, `verification-before-completion`
 - **Collaboration:** `dispatching-parallel-agents`, `requesting-code-review`, `receiving-code-review`
 - **Git:** `using-git-worktrees`, `finishing-a-development-branch`
-- **Meta:** `using-superpowers`, `writing-skills`
+- **Meta:** `using-superpowers`, `writing-skills`, `agency-agent-routing`
+- **Fork additions:** `vibetest` (browser QA swarm), `hermes-cron-management`
+
+### Subagents
+
+`agents/` holds curated Claude Code sub-agent definitions not present upstream — role-specific personas (e.g. `backend-architect`, `security-architect`, `code-reviewer`, `test-automation-engineer`, `technical-writer`) you can invoke via the `Agent` tool for focused work outside the core skills workflow.
 
 ### Runtime integrations
 
-- `.claude-plugin/` — Claude Code plugin metadata
+- `.claude-plugin/` — Claude Code plugin and marketplace metadata for this fork
 - `.codex-plugin/` — Codex plugin metadata
 - `.hermes-plugin/` — Hermes Agent plugin and bootstrap
 - `hooks/` — shared Claude/Codex session-start hook support
 - `skills/` — the shared skills library
+- `agents/` — curated Claude Code subagents (fork addition)
 
 ## Philosophy
 

@@ -2,15 +2,15 @@ import os
 import re
 from pathlib import Path
 
-BOOTSTRAP_MARKER = "superpowers:using-superpowers bootstrap for hermes"
+BOOTSTRAP_MARKER = "superpowers-lite:using-superpowers bootstrap for hermes"
 
 
 def _skills_dir() -> str:
     """Locate the stock skills/ tree for either supported install layout.
 
-    - git-clone install (`hermes plugins install obra/superpowers`): the plugin
-      dir is the repo root, so `.hermes-plugin/` and `skills/` are siblings and
-      this module resolves `../skills`.
+    - git-clone install (`hermes plugins install TheophilusChinomona/superpowers-lite`):
+      the plugin dir is the repo root, so `.hermes-plugin/` and `skills/` are
+      siblings and this module resolves `../skills`.
     - flattened install (plugin files copied to the plugin dir root): `skills/`
       sits next to this module.
 
@@ -26,9 +26,9 @@ def _skills_dir() -> str:
         if os.path.isfile(os.path.join(cand, "using-superpowers", "SKILL.md")):
             return cand
     raise RuntimeError(
-        "superpowers plugin: cannot find the skills/ tree "
+        "superpowers-lite plugin: cannot find the skills/ tree "
         f"(looked at {candidates}). Reinstall with "
-        "`hermes plugins install obra/superpowers`."
+        "`hermes plugins install TheophilusChinomona/superpowers-lite`."
     )
 
 
@@ -60,8 +60,8 @@ def _build_bootstrap(skills_dir: str) -> str:
         f"{body}\n\n"
         f"## Loading Superpowers Skills on Hermes\n\n"
         f"Superpowers skills are registered with Hermes' native skill loader: "
-        f'invoke one with `skill_view("superpowers:skill-name")` '
-        f'(for example `skill_view("superpowers:brainstorming")`). '
+        f'invoke one with `skill_view("superpowers-lite:skill-name")` '
+        f'(for example `skill_view("superpowers-lite:brainstorming")`). '
         f"If a namespaced lookup returns 'not found', read the skill file "
         f"directly instead:\n"
         f'`read_file("{skills_dir}/skill-name/SKILL.md")`\n\n'
