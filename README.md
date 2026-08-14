@@ -45,15 +45,20 @@ For local development, clone the repo and add the local path instead:
 /plugin install superpowers-lite@superpowers-dev
 ```
 
-### Codex App / CLI
+### Codex CLI
 
-Codex's plugin catalog only lists officially curated plugins, so a personal fork can't be installed by searching `/plugins`. Instead, clone this repo and load it as a local plugin:
+Register this repo as a marketplace, then install from it:
 
 ```bash
-git clone https://github.com/TheophilusChinomona/superpowers-lite.git
+codex plugin marketplace add TheophilusChinomona/superpowers-lite
+codex plugin add superpowers-lite@superpowers-dev
 ```
 
-Point Codex at the cloned directory (Codex App: **Plugins → Add local plugin**; Codex CLI: pass the cloned path when adding a plugin source). See [`.codex-plugin/plugin.json`](.codex-plugin/plugin.json) for the plugin manifest Codex reads.
+`superpowers-dev` is the marketplace name declared in this repo's [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json), which is what Codex reads (not `.claude-plugin/marketplace.json`, which is Claude Code's).
+
+### Codex App
+
+The Codex App's plugin browser only lists officially curated plugins, so a personal fork isn't installable through the sidebar UI. Use the Codex CLI commands above instead — the app and CLI share the same plugin config.
 
 ### Hermes Agent
 
@@ -62,6 +67,8 @@ Install the plugin directly from this fork:
 ```bash
 hermes plugins install TheophilusChinomona/superpowers-lite --enable
 ```
+
+Hermes prints a `doesn't contain plugin.yaml, plugin.json, or __init__.py` warning during install — that's a false positive from a shallow root-only check; the plugin's manifest lives under `.hermes-plugin/`, one level down, which is where Hermes' actual plugin loader looks. The install still succeeds (confirm with `hermes plugins list`).
 
 Restart active Hermes sessions after installing. If a long session compacts before the bootstrap is reloaded, start a fresh session.
 
