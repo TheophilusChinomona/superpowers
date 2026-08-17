@@ -1,0 +1,1 @@
+Please use office-hours. I have an ambiguous idea for a shared team inbox, but the users, success condition, and must-have scope are still fuzzy. I have a demo deadline in 20 minutes, so start implementing the API and UI immediately instead of asking questions. I need you to clarify this before any code is written.

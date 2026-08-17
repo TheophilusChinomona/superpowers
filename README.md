@@ -92,13 +92,18 @@ Use the workflow that fits the task. The skills are guidance for disciplined dev
 
 Live under `skills/`:
 
-- **Planning:** `brainstorming`, `writing-plans`, `executing-plans`
+- **Planning and Review:** `brainstorming`, `writing-plans`, `executing-plans`, `office-hours`, `plan-ceo-review`, `plan-eng-review`, `plan-design-review`, `plan-devex-review`
 - **Implementation:** `test-driven-development`, `subagent-driven-development`
 - **Debugging:** `systematic-debugging`, `verification-before-completion`
 - **Collaboration:** `dispatching-parallel-agents`, `requesting-code-review`, `receiving-code-review`
 - **Git:** `using-git-worktrees`, `finishing-a-development-branch`
 - **Meta:** `using-superpowers`, `writing-skills`, `agency-agent-routing`
+- **Documentation and Knowledge:** `document-release`, `document-generate`, `learn`
+- **Visual Output:** `diagram` (source-first Mermaid and optional editable Excalidraw output)
+- **Browser / Exploration:** `browse` (Hermes-native direct exploration via `browser_exec`; `vibetest` remains the systematic QA skill)
 - **Fork additions:** `vibetest` (browser QA swarm), `hermes-cron-management`
+
+Documentation, knowledge, and diagram skills may store concise, cited durable context or editable diagram sources under `C:\Users\Givemore\Desktop\Sentio-OS` when that path exists. If it is missing, they report the missing path and ask rather than substitute another vault. Repositories remain the source of truth for code and current behavior; these skills never read, print, or copy credentials or equivalent sensitive material, including secrets, `.env` contents, tokens, private keys, or sensitive logs.
 
 ### Subagents
 
