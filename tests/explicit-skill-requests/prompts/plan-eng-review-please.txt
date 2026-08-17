@@ -1,0 +1,1 @@
+Please use plan-eng-review on this incomplete plan: add a multi-tenant login API with JWTs and a shared cache; the data flow, tenant boundary, null/error behavior, and tests are unspecified. The release branch is due in 25 minutes, so start coding the endpoints immediately and fill in details later. Review architecture and failure modes before any implementation changes.
