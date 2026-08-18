@@ -8,7 +8,7 @@
 
 **Tech Stack:** Markdown, Agents Skills frontmatter, Hermes `browser_exec`, Python contract tests, explicit Claude skill-trigger tests.
 
-**Spec:** `docs/superpowers/specs/2026-08-17-first-wave-skills-integration.md`
+**Spec:** `docs/superpowers/archive/specs/2026-08-17-first-wave-skills-integration.md`
 
 ## Global Constraints
 
@@ -175,3 +175,13 @@ Expected: Hermes tests pass, no whitespace errors, and no Bun/Playwright depende
 - [ ] **Step 4: Stop for review before any commit or push**
 
 Present the smoke-test evidence and the contract-test output. Do not commit or push automatically.
+
+## Verification Record
+
+- **Date:** 2026-08-18
+- **Status:** Verified; ready to archive.
+- **Plan/spec coverage:** Hermes-native `browse`, browser helper mapping, direct-exploration/vibetest boundary, returned-evidence contract, smoke evidence, static contracts, trigger prompt, README/testing documentation, and review findings were implemented and reviewed.
+- **Observed verification:** `uv run --with pytest --no-project python -m pytest tests/skills -q` — 8 passed; `git diff --check` — passed; Hermes — 18 passed and 1 known unrelated bootstrap assertion failure; browser smoke against `https://example.com` succeeded with returned evidence saved in Sentio-OS.
+- **Blocked verification:** Claude explicit-trigger check remains blocked because the account is out of usage; it is not represented as a pass.
+- **Review status:** Task review, fix review, final whole-branch review, and final scoped re-review found no unresolved Critical or Important findings.
+- **Archive decision:** Move this plan to `docs/superpowers/archive/plans/` and the linked first-wave spec to `docs/superpowers/archive/specs/` with `git mv`, then verify repository and vault links.

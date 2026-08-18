@@ -20,6 +20,7 @@ When you start building something, the skills guide the agent through a delibera
 4. **TDD** enforces the RED-GREEN-REFACTOR cycle.
 5. **Execution workflows** implement tasks with review and verification.
 6. **Finishing a branch** verifies the result and presents the next delivery option.
+7. **Plan/spec completion** re-verifies the delivered work against both documents, records the evidence, and archives verified pairs under `docs/superpowers/archive/`.
 
 The bootstrap is loaded automatically by the supported integrations. You do not need to manually invoke the first skill.
 
@@ -86,6 +87,8 @@ The core skills are designed to work together:
 
 Use the workflow that fits the task. The skills are guidance for disciplined development, not a requirement to use every stage for every change.
 
+When a change has an implementation plan and linked spec, SDD/TDD ends with a Plan/Spec Completion Gate: re-read both documents, write a `## Verification Record` in the plan, resolve or record blockers, move verified pairs with `git mv`, and verify the archive links. Plans and specs remain active while work is in progress; unresolved Critical or Important findings prevent archival. See [`docs/superpowers/archive/README.md`](docs/superpowers/archive/README.md).
+
 ## What's inside
 
 ### Skills
@@ -104,6 +107,15 @@ Live under `skills/`:
 - **Fork additions:** `vibetest` (browser QA swarm), `hermes-cron-management`
 
 Documentation, knowledge, and diagram skills may store concise, cited durable context or editable diagram sources under `C:\Users\Givemore\Desktop\Sentio-OS` when that path exists. If it is missing, they report the missing path and ask rather than substitute another vault. Repositories remain the source of truth for code and current behavior; these skills never read, print, or copy credentials or equivalent sensitive material, including secrets, `.env` contents, tokens, private keys, or sensitive logs.
+
+### Plans, specs, and archives
+
+- Active implementation plans: `docs/superpowers/plans/`
+- Active specifications: `docs/superpowers/specs/`
+- Verified archived plans: `docs/superpowers/archive/plans/`
+- Verified archived specifications: `docs/superpowers/archive/specs/`
+
+The repository remains the source of truth. Archive a plan/spec pair only after the final verification record passes its completion gate; update any repository or Sentio-OS links when moving it.
 
 ### Subagents
 
@@ -141,6 +153,8 @@ Keep changes focused and preserve the small supported-integration surface. Befor
 3. Keep unrelated harness integrations and dependencies out of core.
 4. Run targeted tests and report the results.
 5. Review the complete diff before committing or opening a pull request.
+
+Pull requests stay within this fork (`TheophilusChinomona/superpowers-lite`) and target its `developer` branch. Do not open pull requests against upstream `obra/superpowers`.
 
 ## License
 

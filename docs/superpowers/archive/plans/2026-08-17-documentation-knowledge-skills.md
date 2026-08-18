@@ -8,7 +8,7 @@
 
 **Tech Stack:** Markdown, Agents Skills frontmatter, Python contract tests, Mermaid, Excalidraw JSON, Sentio-OS Markdown.
 
-**Spec:** `docs/superpowers/specs/2026-08-17-first-wave-skills-integration.md`
+**Spec:** `docs/superpowers/archive/specs/2026-08-17-first-wave-skills-integration.md`
 
 ## Global Constraints
 
@@ -222,3 +222,13 @@ Expected: Hermes tests pass, no whitespace errors, and no unrelated runtime or i
 - [ ] **Step 4: Stop for review before any commit or push**
 
 Present generated note examples, secret-boundary evidence, diagram artifact evidence, and test results. Do not commit or push automatically.
+
+## Verification Record
+
+- **Date:** 2026-08-18
+- **Status:** Verified; ready to archive.
+- **Plan/spec coverage:** All four documentation/knowledge skills, Sentio-OS boundaries, secret protections, source-first diagram rules, static contracts, trigger prompts, README/testing documentation, and review findings were implemented and reviewed.
+- **Observed verification:** `uv run --with pytest --no-project python -m pytest tests/skills -q` — 8 passed; `git diff --check` — passed; Hermes — 18 passed and 1 known unrelated bootstrap assertion failure.
+- **Blocked verification:** Claude explicit-trigger checks remain blocked because the account is out of usage; they are not represented as passes.
+- **Review status:** Task review, fix review, final whole-branch review, and final scoped re-review found no unresolved Critical or Important findings.
+- **Archive decision:** Move this plan to `docs/superpowers/archive/plans/` and the linked first-wave spec to `docs/superpowers/archive/specs/` with `git mv`, then verify repository and vault links.

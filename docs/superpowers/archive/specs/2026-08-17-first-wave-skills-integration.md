@@ -59,6 +59,15 @@ The selected source skill documents are in the gstack repository:
 
 ## Independent delivery plans
 
-1. `docs/superpowers/plans/2026-08-17-planning-review-skills.md`
-2. `docs/superpowers/plans/2026-08-17-documentation-knowledge-skills.md`
-3. `docs/superpowers/plans/2026-08-17-hermes-native-browse.md`
+1. `docs/superpowers/archive/plans/2026-08-17-planning-review-skills.md`
+2. `docs/superpowers/archive/plans/2026-08-17-documentation-knowledge-skills.md`
+3. `docs/superpowers/archive/plans/2026-08-17-hermes-native-browse.md`
+
+## Verification Record
+
+- **Date:** 2026-08-18
+- **Status:** Verified; linked implementation plans are complete and ready to archive with this specification.
+- **Coverage:** All ten approved skills and the integration boundaries in this specification were implemented, statically verified, reviewed, and documented.
+- **Observed verification:** Skill contracts — 8 passed; `git diff --check` — passed; Hermes — 18 passed and 1 known unrelated bootstrap assertion failure; browser smoke evidence — passed.
+- **Blocked verification:** Claude explicit-trigger checks remain blocked because the account is out of usage; no blocked check is represented as a pass.
+- **Archive decision:** Move this specification to `docs/superpowers/archive/specs/` with `git mv` together with the three linked plans in `docs/superpowers/archive/plans/`, then verify repository and vault links.
