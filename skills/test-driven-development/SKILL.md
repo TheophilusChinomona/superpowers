@@ -280,6 +280,16 @@ PASS
 **REFACTOR**
 Extract validation for multiple fields if needed.
 
+## Plan/Spec Completion Gate
+
+When TDD is executing a change with an implementation plan and linked spec, the workflow does not end at the last green test. Re-read the plan and its linked spec and perform a final verification against both documents.
+
+1. **Verify the delivered work.** Check every plan task, spec requirement, constraint, test, regression risk, and required evidence. Distinguish passed, blocked, not tested, and known baseline failures.
+2. **Write the verification record.** Add or update a `## Verification Record` in the plan with the verification date, RED/GREEN/REFACTOR evidence, final commands and observed results, spec coverage, and unresolved findings.
+3. **Apply the archive gate.** Do not archive while there is an unresolved Critical or unresolved Important finding, an unrecorded blocker, or an unchecked plan/spec requirement. If verification is blocked, leave the plan and spec active and record the blocker.
+4. **Archive the verified documents.** After the verification record is complete and the archive gate passes, use `git mv` to move the plan to `docs/superpowers/archive/plans/` and its linked spec to `docs/superpowers/archive/specs/`. Preserve filenames and update repository/vault links.
+5. **Verify the archive.** Confirm the archived plan and spec exist, links resolve, there are no active duplicates, and the final diff contains the archive moves before declaring the TDD cycle complete.
+
 ## Verification Checklist
 
 Before marking work complete:

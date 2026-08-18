@@ -18,6 +18,8 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 **Save plans to:** `docs/superpowers/plans/`, using a dated, feature-specific Markdown filename.
 - (User preferences for plan location override this default)
 
+Plans and their linked specs remain active in `docs/superpowers/plans/` and `docs/superpowers/specs/` while work is in progress. Archive only after the SDD/TDD Plan/Spec Completion Gate has re-read both documents, written the plan's `## Verification Record`, and confirmed there are no unresolved Critical or Important findings. Use `git mv` to move completed plans to `docs/superpowers/archive/plans/` and linked specs to `docs/superpowers/archive/specs/`, then update repository and vault links and verify the archive moves.
+
 ## Scope Check
 
 If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.

@@ -99,7 +99,8 @@ digraph process {
     "More tasks remain?" [shape=diamond];
     "Dispatch final code reviewer (../requesting-code-review/code-reviewer.md)" [shape=box];
     "Final findings? ONE fix dispatch, one scoped re-review, adjudicate residuals" [shape=box];
-    "Final review clean: delete this plan's workspace" [shape=box];
+    "Final review clean: verify plan/spec and write record" [shape=box];
+    "Archive verified plan and linked spec" [shape=box];
     "Use superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
 
     "Setup: worktree, ledger check, read plan, pre-flight review" -> "Dispatch implementer subagent (./implementer-prompt.md)";
@@ -128,8 +129,9 @@ digraph process {
     "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
     "More tasks remain?" -> "Dispatch final code reviewer (../requesting-code-review/code-reviewer.md)" [label="no"];
     "Dispatch final code reviewer (../requesting-code-review/code-reviewer.md)" -> "Final findings? ONE fix dispatch, one scoped re-review, adjudicate residuals";
-    "Final findings? ONE fix dispatch, one scoped re-review, adjudicate residuals" -> "Final review clean: delete this plan's workspace";
-    "Final review clean: delete this plan's workspace" -> "Use superpowers:finishing-a-development-branch";
+    "Final findings? ONE fix dispatch, one scoped re-review, adjudicate residuals" -> "Final review clean: verify plan/spec and write record";
+    "Final review clean: verify plan/spec and write record" -> "Archive verified plan and linked spec";
+    "Archive verified plan and linked spec" -> "Use superpowers:finishing-a-development-branch";
 }
 ```
 
@@ -480,6 +482,16 @@ the four classes above stop you here. There is no second fix wave —
 residual load-bearing findings surface to your human partner when
 finishing-a-development-branch presents the options.
 
+## Plan/Spec Completion Gate
+
+After the final whole-branch review is clean, the plan does not end at a green test command. Re-read the plan and its linked spec and perform a final verification against both documents.
+
+1. **Verify the delivered work.** Check every plan task, spec requirement, global constraint, review finding, and required evidence. Confirm that tests, manual checks, blocked checks, and known baseline failures are distinguished rather than silently promoted to passing.
+2. **Write the verification record.** Add or update a `## Verification Record` in the plan with the verification date, commands and observed results, files or behavior checked, unresolved findings, and the linked spec's coverage. The record is the final status of the plan, not a replacement for test output.
+3. **Apply the archive gate.** Do not archive while there is an unresolved Critical or unresolved Important finding, an unrecorded blocker, or a plan/spec requirement that was not checked. If verification is blocked, leave the plan and spec active and state the blocker.
+4. **Archive the verified documents.** Once the verification record is complete and the archive gate passes, use `git mv` to move the plan to `docs/superpowers/archive/plans/` and its linked spec to `docs/superpowers/archive/specs/`. Preserve filenames, update repository and vault links, and keep the archive README as the policy reference.
+5. **Verify the archive.** Re-check that the archived plan and spec exist, all links resolve, the active directories no longer contain duplicate copies, and the final diff contains the archive moves. Only then continue to `superpowers:finishing-a-development-branch`.
+
 ## Finish
 
 Before you delete anything, collect every ledger line containing `Ruling:` —
@@ -491,10 +503,7 @@ took on your human partner's behalf reach them — they read it and rework
 whatever you got wrong. A ruling that dies with the workspace was a decision
 made in secret.
 
-When the final whole-branch review is clean and its fixes are merged,
-delete this plan's workspace (`rm -rf <workspace>`) — the git history is
-the record now. Sibling directories belong to other plans; leave them
-alone.
+After the Plan/Spec Completion Gate has verified and archived the documents, and the archive moves are in the final diff, delete this plan's workspace (`rm -rf <workspace>`) — the git history and archived documents are the record now. Sibling directories belong to other plans; leave them alone.
 
 Use superpowers:finishing-a-development-branch.
 
